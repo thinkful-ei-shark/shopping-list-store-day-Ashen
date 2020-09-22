@@ -12,7 +12,9 @@ const generateItemElement = function (item) {
   let itemTitle = `<span class='shopping-item shopping-item__checked'>${item.name}</span>`;
   if (!item.checked) {
     itemTitle = `
-     <span class='shopping-item'>${item.name}</span>
+      <form class="js-edit-item">
+        <input class="shopping-item" type="text" value="${item.name}" />
+      </form>
     `;
   }
 
@@ -141,6 +143,16 @@ const toggleCheckedItemsFilter = function () {
 const handleToggleFilterClick = function () {
   $('.js-filter-checked').click(() => {
     toggleCheckedItemsFilter();
+    render();
+  });
+};
+
+const handleEditShoppingItemSubmit = function () {
+  $('.js-shopping-list').on('submit', '.js-edit-item', function(event) {
+    event.preventDefault();
+    const id = getItemIdFromElement(event.currentTarget);
+    const itemName = $(event.currentTarget).find('.shopping-item').val();
+    editListItemName(id, itemName);
     render();
   });
 };
